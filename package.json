@@ -24,7 +24,7 @@
     "async": "~0.9.0",
     "ejs": "~1.0.0",
     "express": "~4.10.2",
-    "systemctl": "~0.1.0",
-    "iwlist": "~0.0.5"
+    "systemctl": "~0.1.1",
+    "node-wifi": "~1.2.4"
   }
 }

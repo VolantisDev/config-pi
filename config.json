@@ -1,5 +1,6 @@
 {
     "install_path": "/opt/rpi-web-config",
+    "wifi_interface": "wlan0",
     "server": {
         "interface": "*",
         "port": 88,

@@ -47,10 +47,6 @@ $sudo mv assets/bin/hostapd.rtl871xdrv /usr/sbin/hostapd
 $sudo chmod 755 /usr/sbin/hostapd
 ```
 
-Note that the `wifi_driver_type` config variable is defaulted to the `nl80211` driver. However, if `iw list` fails on the app startup, it will automatically set the driver type of `rtl871xdrv`. Remember that even though you do not need to update the config / default value - you will need to use the updated `hostapd` binary bundled with this app.
-
-TODO: Automatically maintain the correct version of `hostapd` based on the `wifi_driver_type`.
-
 ## Usage
 
 This is approximately what occurs when we run this app:

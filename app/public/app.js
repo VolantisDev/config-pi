@@ -32,12 +32,12 @@ app.controller("AppController", ["ConfigServer", "$scope", "$location", "$timeou
         }
 
         // Scope function definitions
-        $scope.rescan = function() {
+        $scope.scan = function() {
             $scope.scan_results = [];
             $scope.selected_cell = null;
             $scope.scan_running = true;
 
-            ConfigServer.rescan_wifi().then(function(response) {
+            ConfigServer.scan_wifi().then(function(response) {
                 console.log(response.data);
 
                 if (response.data.status == "SUCCESS") {
@@ -72,7 +72,7 @@ app.controller("AppController", ["ConfigServer", "$scope", "$location", "$timeou
         }
 
         // Defer load the scanned results
-        $scope.rescan();
+        $scope.scan();
     }]
 );
 
@@ -83,8 +83,8 @@ app.service("ConfigServer", ["$http",
 
     function($http) {
         return {
-            rescan_wifi: function() {
-                return $http.get("/api/rescan_wifi");
+            scan_wifi: function() {
+                return $http.get("/api/scan_wifi");
             },
             enable_wifi: function(wifi_info) {
                 return $http.post("/api/enable_wifi", wifi_info);
