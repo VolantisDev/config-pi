@@ -1,37 +1,15 @@
 "use strict";
 
-/***
- *  Define the app and inject any modules we wish to
- *  refer to.
-***/
 var app = angular.module("RpiWebConfig", []);
 
-/******************************************************************************\
-Function:
-    AppController
-
-Dependencies:
-    ...
-
-Description:
-    Main application controller
-\******************************************************************************/
 app.controller("AppController", ["ConfigServer", "$scope", "$location", "$timeout",
-
     function(ConfigServer, $scope, $location, $timeout) {
-        // Scope variable declaration
         $scope.scan_results              = [];
         $scope.selected_cell             = null;
         $scope.scan_running              = false;
         $scope.network_passcode          = "";
         $scope.show_passcode_entry_field = false;
 
-        // Scope filter definitions
-        $scope.orderScanResults = function(cell) {
-            return parseInt(cell.signal_strength);
-        }
-
-        // Scope function definitions
         $scope.scan = function() {
             $scope.scan_results = [];
             $scope.selected_cell = null;
@@ -71,16 +49,12 @@ app.controller("AppController", ["ConfigServer", "$scope", "$location", "$timeou
             });
         }
 
-        // Defer load the scanned results
         $scope.scan();
-    }]
-);
+    }
+]);
 
-/*****************************************************************************\
-    Service to hit the Captive Wifi config server
-\*****************************************************************************/
+// Service to hit the config API
 app.service("ConfigServer", ["$http",
-
     function($http) {
         return {
             scan_wifi: function() {
@@ -91,26 +65,19 @@ app.service("ConfigServer", ["$http",
             }
         };
     }]
-
 );
 
-/*****************************************************************************\
-    Directive to show / hide / clear the password prompt
-\*****************************************************************************/
+// Show/hide/clear the password prompt
 app.directive("rwcPasswordEntry", function($timeout) {
     return {
         restrict: "E",
-
         scope: {
             visible:  "=",
             passcode: "=",
             reset:    "&",
             submit:   "&",
         },
-
-        replace: true,          // Use provided template (as opposed to static
-                                // content that the modal scope might define in the
-                                // DOM)
+        replace: true,
         template: [
             "<div class='rwc-password-entry-container' ng-class='{\"hide-me\": !visible}'>",
             "    <div class='box'>",
@@ -120,9 +87,6 @@ app.directive("rwcPasswordEntry", function($timeout) {
             "    </div>",
             "</div>"
         ].join("\n"),
-
-        // Link function to bind modal to the app
-        link: function(scope, element, attributes) {
-        },
+        link: function(scope, element, attributes) {},
     };
 });
