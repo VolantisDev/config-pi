@@ -22,7 +22,7 @@ app.set("trust proxy", true);
 
 app.use('/public', express.static(path.join(__dirname, "public")));
 app.use('/angular', express.static(path.join(require.resolve('angular'), '../')));
-app.use('/font-awesome', express.static(path.join(require.resolve('components-font-awesome'), '../')));
+app.use('/fontawesome', express.static(path.join(require.resolve('components-font-awesome'), '../')));
 app.use(bodyParser.json());
 
 app.get("/", function (request, response) {
