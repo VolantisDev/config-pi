@@ -4,10 +4,10 @@ var app = angular.module("RpiWebConfig", []);
 
 app.controller("AppController", ["ConfigServer", "$scope", "$location", "$timeout",
     function(ConfigServer, $scope, $location, $timeout) {
-        $scope.scan_results              = [];
-        $scope.selected_cell             = null;
-        $scope.scan_running              = false;
-        $scope.network_passcode          = "";
+        $scope.scan_results = [];
+        $scope.selected_cell = null;
+        $scope.scan_running = false;
+        $scope.network_passcode = "";
         $scope.show_passcode_entry_field = false;
 
         $scope.scan = function() {
@@ -42,10 +42,6 @@ app.controller("AppController", ["ConfigServer", "$scope", "$location", "$timeou
 
             ConfigServer.enable_wifi(wifi_info).then(function(response) {
                 console.log(response.data);
-                
-                if (response.data.status == "SUCCESS") {
-                    console.log("AP Enabled - nothing left to do...");
-                }
             });
         }
 
