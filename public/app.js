@@ -16,7 +16,7 @@ app.controller("AppController", ["ConfigServer", "$scope", "$location", "$timeou
             $scope.scan_running = true;
 
             ConfigServer.scan_wifi().then(function(response) {
-                console.log(response.data);
+                console.log(response);
 
                 if (response.data.status == "SUCCESS") {
                     $scope.scan_results = response.data.scan_results;
