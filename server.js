@@ -41,18 +41,16 @@ app.post("/api/set_hostname", function (request, respoonse) {
 });
 
 app.get("/api/scan_wifi", function (request, response) {
-    wifi_manager.get_wifi_interface(function (error, wifi_interface) {
-        wifi_manager.scan_networks(wifi_interface, function (error, result) {
-            if (error) {
-                console.log("ERROR: " + error);
-                response.send({ status: "ERROR", error: error });
-            } else {
-                result["status"] = "SUCCESS";
-                response.send(result);
-            }
+    wifi_manager.scan_networks(function (error, result) {
+        if (error) {
+            console.log("ERROR: " + error);
+            response.send({ status: "ERROR", error: error });
+        } else {
+            result["status"] = "SUCCESS";
+            response.send(result);
+        }
         
-            response.end();
-        });
+        response.end();
     });
 });
 
