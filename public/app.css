@@ -95,7 +95,7 @@ html, body {
 .scan-result .ssid {
     position: absolute;
     top: 0; left: 10%;
-    width: 70%; height: 100%;
+    width: 65%; height: 100%;
 }
 .scan-result .secure {
     color: white;
@@ -104,7 +104,7 @@ html, body {
 .scan-result .frequency {
     position: absolute;
     top: 0; 
-    left: 75%;
+    left: 70%;
     width: 10%;
     height: 100%;
 }
