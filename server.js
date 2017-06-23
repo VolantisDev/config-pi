@@ -2,7 +2,8 @@ var path = require('path'),
     wifi_manager = require('wifi-manager')
     express = require('express'),
     bodyParser = require('body-parser'),
-    flatconfig = require('flatconfig');
+    flatconfig = require('flatconfig'),
+    hostnamectl = require('hostnamectl');
 
 var config = flatconfig.load(
     path.resolve(__dirname, 'config.json'),
@@ -15,11 +16,24 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.set("trust proxy", true);
 
-app.use(express.static(path.join(__dirname, "public")));
+app.use('/static', express.static(path.join(__dirname, "public")));
+app.use('/static/angular', express.static(require.resolve('angular')));
+app.use('/static/font-awesome', express.static(require.resolve('components-font-awesome')));
 app.use(bodyParser.json());
 
 app.get("/", function (request, response) {
     response.render("index");
+});
+
+app.post("/api/set_hostname", function (request, respoonse) {
+    hostnamectl.set_hostname(request.body.hostname, function (error) {
+        if (error) {
+            console.log("ERROR setting hostname: " + error);
+            response.redirect("/");
+        }
+
+        console.log("Hostname set successfully.");
+    })
 });
 
 app.get("/api/scan_wifi", function (request, response) {
@@ -38,10 +52,10 @@ app.get("/api/scan_wifi", function (request, response) {
     });
 });
 
-app.post("/api/enable_wifi", function(request, response) {
+app.post("/api/enable_wifi", function (request, response) {
     var connection_info = {
-        wifi_ssid:      request.body.wifi_ssid,
-        wifi_passcode:  request.body.wifi_passcode,
+        wifi_ssid: request.body.wifi_ssid,
+        wifi_passcode: request.body.wifi_passcode,
     };
 
     wifi_manager.enable_wifi(connection_info, function(error) {
@@ -49,10 +63,10 @@ app.post("/api/enable_wifi", function(request, response) {
             console.log("Enable Wifi ERROR: " + error);
             response.redirect("/");
         }
-        // Success! - exit
-        console.log("Wifi Enabled!");
+        
+        console.log("Wifi enabled successfully.");
     });
 });
 
 // Listen on our server
-app.listen(config.server.port);
+app.listen(config.server.port, config.server.ip);
