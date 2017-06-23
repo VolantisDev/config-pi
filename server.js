@@ -2,12 +2,18 @@ var path = require('path'),
     wifi_manager = require('wifi-manager')
     express = require('express'),
     bodyParser = require('body-parser'),
+    fs = require('fs'),
     flatconfig = require('flatconfig'),
     hostnamectl = require('hostnamectl');
 
+var configFilePath = '/etc/rpi-web-config/config';
+if (!fs.existsSync(configFilePath)) {
+    var configFilePath = '';
+}
+
 var config = flatconfig.load(
     path.resolve(__dirname, 'config.json'),
-    path.resolve(process.cwd(), '/etc/rpi-web-config/config')
+    path.resolve(process.cwd(), configFilePath)
 );
 
 var app = express();
