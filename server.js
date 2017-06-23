@@ -7,14 +7,12 @@ var path = require('path'),
     hostnamectl = require('hostnamectl');
 
 var configFilePath = '/etc/rpi-web-config/config';
-if (!fs.existsSync(configFilePath)) {
-    var configFilePath = '';
-}
-
 var config = flatconfig.load(
-    path.resolve(__dirname, 'config.json'),
-    path.resolve(process.cwd(), configFilePath)
+    path.resolve(__dirname, 'config.json')
 );
+if (fs.existsSync(configFilePath)) {
+    flatconfig.join.ini(config, configFilePath);
+}
 
 var app = express();
 
