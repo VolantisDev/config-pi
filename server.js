@@ -48,6 +48,7 @@ app.get("/api/scan_wifi", function (request, response) {
         } else {
             console.log("SUCCESS: Found " + result[0].scan_results.length + " networks");
             result = result[0];
+            console.log(result);
             result["status"] = "SUCCESS";
             response.send(result);
         }
