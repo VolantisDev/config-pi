@@ -20,7 +20,7 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.set("trust proxy", true);
 
-app.use('/static', express.static(path.join(__dirname, "public")));
+app.use('/public', express.static(path.join(__dirname, "public")));
 app.use('/static/angular', express.static(require.resolve('angular')));
 app.use('/static/font-awesome', express.static(require.resolve('components-font-awesome')));
 app.use(bodyParser.json());
@@ -72,5 +72,5 @@ app.post("/api/enable_wifi", function (request, response) {
     });
 });
 
-console.log("Listening on port " + config.server.port);
+console.log("Listening on port " + config.server.port + " on ip " + config.server.ip);
 app.listen(config.server.port, config.server.ip);
