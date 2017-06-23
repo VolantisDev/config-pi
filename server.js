@@ -72,5 +72,5 @@ app.post("/api/enable_wifi", function (request, response) {
     });
 });
 
-// Listen on our server
+console.log("Listening on ip " + config.server.ip + " on port " + config.server.port);
 app.listen(config.server.port, config.server.ip);
