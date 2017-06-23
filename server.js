@@ -46,6 +46,7 @@ app.get("/api/scan_wifi", function (request, response) {
             console.log("ERROR: " + error);
             response.send({ status: "ERROR", error: error });
         } else {
+            console.log(result);
             result["status"] = "SUCCESS";
             response.send(result);
         }
