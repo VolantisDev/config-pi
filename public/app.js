@@ -16,6 +16,7 @@ app.controller("AppController", ["ConfigServer", "$scope", "$location", "$timeou
             $scope.scan_running = true;
 
             ConfigServer.scan_wifi().then(function(response) {
+                console.log('Got response');
                 console.log(response);
 
                 if (response.data.status == "SUCCESS") {
@@ -36,8 +37,8 @@ app.controller("AppController", ["ConfigServer", "$scope", "$location", "$timeou
             if (!$scope.selected_cell) return;
 
             var wifi_info = {
-                wifi_ssid:      $scope.selected_cell["ssid"],
-                wifi_passcode:  $scope.network_passcode,
+                wifi_ssid: $scope.selected_cell["ssid"],
+                wifi_passcode: $scope.network_passcode,
             };
 
             ConfigServer.enable_wifi(wifi_info).then(function(response) {
@@ -68,10 +69,10 @@ app.directive("rwcPasswordEntry", function($timeout) {
     return {
         restrict: "E",
         scope: {
-            visible:  "=",
+            visible: "=",
             passcode: "=",
-            reset:    "&",
-            submit:   "&",
+            reset: "&",
+            submit: "&",
         },
         replace: true,
         template: [
