@@ -1,10 +1,10 @@
 // Core Admin Variables
 
 $enable-sidebar-nav-rounded: false;
-
+$body-color: white;
 $border-color: $gray-lighter;
 $layout-transition-speed: .25s;
-
+$border-radius: 0;
 
 // Social Colors
 
@@ -48,7 +48,7 @@ $navbar-border: (
 );
 $navbar-brand-width:                155px;
 $navbar-brand-bg:                   #fff;
-$navbar-brand-logo:                 url('../img/logo.png');
+$navbar-brand-logo:                 url('../assets/logo.png');
 $navbar-brand-logo-size:            150px auto;
 $navbar-brand-border: (
   bottom: (

@@ -2,7 +2,7 @@ var path = require('path')
 var utils = require('./utils')
 var config = require('../config')
 var vueLoaderConfig = require('./vue-loader.conf')
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var ExtractTextPlugin = require("extract-text-webpack-plugin")
 
 function resolve(dir) {
     return path.join(__dirname, '..', dir)
@@ -16,7 +16,8 @@ module.exports = {
         path: config.build.assetsRoot,
         filename: '[name].js',
         publicPath: process.env.NODE_ENV === 'production' ?
-            config.build.assetsPublicPath : config.dev.assetsPublicPath
+            config.build.assetsPublicPath :
+            config.dev.assetsPublicPath
     },
     resolve: {
         extensions: ['.js', '.vue', '.json'],
@@ -46,29 +47,6 @@ module.exports = {
                 include: [resolve('src'), resolve('test')]
             },
             {
-                test: /\.css$/,
-                loader: ExtractTextPlugin.extract([{
-                        loader: 'css-loader',
-                        options: {
-                            importLoaders: 1
-                        }
-                    },
-                    'postcss-loader'
-                ])
-            },
-            {
-                test: /\.scss$/,
-                loader: ExtractTextPlugin.extract([{
-                        loader: 'css-loader',
-                        options: {
-                            importLoaders: 1
-                        }
-                    },
-                    'postcss-loader',
-                    'sass-loader'
-                ])
-            },
-            {
                 test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
                 loader: 'url-loader',
                 options: {
@@ -87,6 +65,6 @@ module.exports = {
         ]
     },
     plugins: [
-        new ExtractTextPlugin('static/css/style.css')
+        new ExtractTextPlugin("static/css/style.css")
     ]
 }

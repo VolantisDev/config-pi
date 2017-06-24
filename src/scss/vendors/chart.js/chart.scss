@@ -23,7 +23,7 @@
   white-space: nowrap;
   position: relative;
   margin-bottom: 4px;
-  @include border-radius($border-radius);
+  border-radius: $border-radius;
   padding: 2px 8px 2px 28px;
   font-size: smaller;
   cursor: default;
@@ -41,5 +41,5 @@
   top: 0;
   width: 20px;
   height: 20px;
-  @include border-radius($border-radius);
+  border-radius: $border-radius;
 }
