@@ -1,9 +1,8 @@
 {
-  "name": "coreui-vue",
-  "version": "1.0.0-alpha.6",
-  "description": "Open Source Admin Template",
-  "author": "Łukasz Holeczek <lukasz@holeczek.pl>",
-  "private": true,
+  "name": "pi-config",
+  "version": "0.0.1",
+  "description": "A pluggable web interface to configure your Raspberry Pi",
+  "author": "Ben McClure <ben.mcclure@gmail.com>",
   "scripts": {
     "dev": "node build/dev-server.js",
     "start": "node build/dev-server.js",
