@@ -1,8 +1,24 @@
-# core-ui
+# Pi Config
 
-> Open Source Admin Template
+> Configuration of your Raspberry Pi (or similar SoC) in a simple and beautiful web interface!
 
-## Build Setup
+You are probably used to plugging in your Raspberry Pi to your network and configuring it as one of your first steps. Alternatively, you might have a pre-built SD card image (or a bunch of them) that has your settings preconfigured but always need to be updated after you get up and running.
+
+Pi Config is an alternative to the existing norm. It allows things such as:
+
+- Configure all of the important parts of your Pi directly from a beautiful web interface
+- Automatic captive Wifi configuration so you never have to wire your Pi to your network
+- A plugin system so anyone can easily extend Pi Config
+- Custom UPnP port assignments
+- Much more!
+
+## Thanks
+
+Thanks to CoreUI, the wonderful and open source admin theme that help launch this project.
+
+## Development
+
+If you wish to contribute to Pi Config's development, here are some helpful commands:
 
 ``` bash
 # install dependencies
