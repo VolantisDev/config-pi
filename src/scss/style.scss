@@ -12,7 +12,7 @@
 @import "bootstrap-variables";
 
 // Import Bootstrap source files
-@import "bootstrap/bootstrap";
+// @import "bootstrap/bootstrap";
 
 // If you want you can import bootstrap scss files directly from node_modules or bower_components.
 // To do this please remove @import "bootstrap/bootstrap"; and uncomment proper line.
@@ -21,7 +21,7 @@
 // @import "node_modules/bootstrap/scss/bootstrap";
 
 // Import Bootstrap source files from bower_components
-// @import "bower_components/bootstrap/scss/bootstrap";
+@import "~bootstrap/scss/bootstrap";
 
 // Import core styles
 @import "custom-variables";
