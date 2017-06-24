@@ -1,39 +1,30 @@
-# rpi-web-config
+# core-ui
 
-A Node application which makes connecting your SoC to your wifi network easier.
+> Open Source Admin Template
 
-These directions are for Archlinux but can be adapted to other OSes.
+## Build Setup
 
-## Requirements
+``` bash
+# install dependencies
+npm install
 
-- Archlinux (or adapt these instructions for your OS)
+# serve with hot reload at localhost:8080
+npm run dev
 
-## Install
+# build for production with minification
+npm run build
 
-```sh
-$sudo pacman -Sy bower
-$sudo mkdir -p /opt/rpi-web-config
-$cd /opt/rpi-web-config
-$sudo git clone https://github.com/bmcclure/node-rpi-web-config.git .
-$npm update
-$bower install
-$sudo npm start
+# build for production and view the bundle analyzer report
+npm run build --report
+
+# run unit tests
+npm run unit
+
+# run e2e tests
+npm run e2e
+
+# run all tests
+npm test
 ```
 
-## Configuration
-
-Create a file at /etc/rpi-web-config/config in the format:
-
-```ini
-# a comment
-server.port=8888
-# another comment
-wifi_interface=wlan0
-```
-
-## Usage
-
-```sh
-$cd /opt/rpi-web-config
-$sudo node server.js < /dev/null &
-```
+For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
