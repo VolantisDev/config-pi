@@ -1,23 +1,26 @@
-require('./check-versions')()
-
-process.env.NODE_ENV = 'production'
-
+var Promise = require('bluebird')
+var checkVersions = require('./check-versions')
 var ora = require('ora')
-var rm = require('rimraf')
+var rm = require('rimraf-promise')
 var path = require('path')
 var chalk = require('chalk')
-var webpack = require('webpack')
-var config = require('../src/config')
+var webpack = Promise.promisify(require('webpack'))
+var config = require('../core/config')
 var webpackConfig = require('./webpack.prod.conf')
 
-var spinner = ora('building for production...')
+process.env.NODE_ENV = 'production'
+checkVersions()
+
+var spinner = ora('Building for production...')
 spinner.start()
 
-rm(path.join(config.build.assetsRoot, config.build.assetsSubDirectory), err => {
-  if (err) throw err
-  webpack(webpackConfig, function (err, stats) {
+rm(path.join(config.build.assetsRoot, config.build.assetsSubDirectory))
+  .then(() => {
+    return webpack(webpackConfig)
+  })
+  .then((stats) => {
     spinner.stop()
-    if (err) throw err
+
     process.stdout.write(stats.toString({
       colors: true,
       modules: false,
@@ -32,4 +35,6 @@ rm(path.join(config.build.assetsRoot, config.build.assetsSubDirectory), err => {
       '  Opening index.html over file:// won\'t work.\n'
     ))
   })
-})
+  .catch((error) => {
+    throw error
+  })

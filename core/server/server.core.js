@@ -1,33 +1,26 @@
+var checkVersions = require('./check-versions')
+var opn = require('opn')
+var ora = require('ora')
+var path = require('path')
+var express = require('express')
+var proxyMiddleware = require('http-proxy-middleware')
+var connectHistoryApiFallback = require('connect-history-api-fallback')
+
 module.exports = (environment) => {
-  environment = environment || 'prod'
-  dev = environment == 'dev'
+  checkVersions()
 
-  require('./check-versions')()
+  var config = require('../src/config/' + environment + '.env.js')
+  var port = process.env.PORT || config.port
+  var address = config.listenAddress || '0.0.0.0'
+  var autoOpenBrowser = !!config.autoOpenBrowser
+  var useWebpack = !!config.useWebpack
+  var host = config.host || 'localhost'
+  var uri = 'http://' + host + ':' + port
 
-  var config = require('../src/config')
-  if (!process.env.NODE_ENV) {
-    process.env.NODE_ENV = JSON.parse(config.dev.env.NODE_ENV)
-  }
-
-  var opn = require('opn')
-  var path = require('path')
-  var express = require('express')
-  var proxyMiddleware = require('http-proxy-middleware')
-
-  if (dev) {
-    var webpack = require('webpack')
-    var webpackConfig = process.env.NODE_ENV === 'dev'
-      ? require('./webpack.dev.conf')
-      : require('./webpack.prod.conf')
-  }
-
-  // default port where dev server listens for incoming traffic
-  var port = process.env.PORT || config.dev.port
-  // automatically open browser, if not set will be false
-  var autoOpenBrowser = dev && !!config.dev.autoOpenBrowser
-  // Define HTTP proxies to your custom API backend
   // https://github.com/chimurai/http-proxy-middleware
-  var proxyTable = config[environment].proxyTable
+  var proxyTable = config.proxyTable
+
+  const spinner = ora('Starting ' + environment + ' server')
 
   var app = express()
 
@@ -41,9 +34,14 @@ module.exports = (environment) => {
   })
 
   // handle fallback for HTML5 history API
-  app.use(require('connect-history-api-fallback')())
+  app.use(connectHistoryApiFallback())
 
-  if (dev) {
+  if (useWebpack) {
+    var webpack = require('webpack')
+    var webpackConfig = process.env.NODE_ENV === 'dev'
+      ? require('./webpack.dev.conf')
+      : require('./webpack.prod.conf')
+
     var compiler = webpack(webpackConfig)
 
     var devMiddleware = require('webpack-dev-middleware')(compiler, {
@@ -74,18 +72,14 @@ module.exports = (environment) => {
   var staticPath = path.posix.join(config.dev.assetsPublicPath, config.dev.assetsSubDirectory)
   app.use(staticPath, express.static('./static'))
 
-  var address = '0.0.0.0'
-  var uri = 'http://localhost:' + port
-
   var _resolve
   var readyPromise = new Promise(resolve => {
     _resolve = resolve
   })
 
-  console.log('> Starting ' + environment + ' server...')
-
   var listenStart = () => {
-    console.log('> Listening at ' + address + ':' + uri + '\n')
+    spinner.succeed('Listening at ' + address + ':' + port)
+
     // when env is testing, don't need open it
     if (autoOpenBrowser && process.env.NODE_ENV !== 'testing') {
       opn(uri)
@@ -93,7 +87,7 @@ module.exports = (environment) => {
     _resolve()
   };
 
-  if (dev) {
+  if (useWebpack) {
     devMiddleware.waitUntilValid(listenStart)
   } else {
     listenStart()

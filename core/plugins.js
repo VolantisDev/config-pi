@@ -6,6 +6,9 @@ var pluginsFile = '/etc/pi-config/plugins'
 var pluginsDir = path.resolve(__dirname, '../plugins')
 
 var plugins = fs.readFileSync(defaultPluginsFile).toString().split('\n')
+
+
+
 if (fs.existsSync(pluginsFile)) {
   plugins.merge(fs.readFileSync(pluginsFile).toString().split('\n'))
 }
