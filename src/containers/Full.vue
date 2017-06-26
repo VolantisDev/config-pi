@@ -10,8 +10,8 @@
       <v-toolbar-side-icon light @click.native.stop="drawerRight = !drawerRight"></v-toolbar-side-icon>
     </v-toolbar>
     <main>
+      <Breadcrumb :list="list"></Breadcrumb>
       <v-container fluid>
-        <breadcrumb :list="list"></breadcrumb>
         <router-view></router-view>
       </v-container>
     </main>

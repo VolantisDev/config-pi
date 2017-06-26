@@ -1,10 +1,14 @@
 <template>
-  <ol class="breadcrumb">
-    <li class="breadcrumb-item" v-for="(item, index) in list">
-      <span class="active" v-if="isLast(index)">{{ showName(item) }}</span>
-      <router-link :to="item.path" v-else>{{ showName(item) }}</router-link>
-    </li>
-  </ol>
+  <v-breadcrumbs icons divider="chevron_right">
+    <v-breadcrumbs-item
+      v-for="(item, index) in list"
+      :key="item"
+      :disabled="item.disabled"
+      :href="!isLast(index) ? item.path : null"
+      :router="true">
+      {{ showName(item) }}
+    </v-breadcrumbs-item>
+  </v-breadcrumbs>
 </template>
 
 <script>
@@ -35,5 +39,7 @@ export default {
 </script>
 
 <style lang="scss">
-
+  .breadcrumbs {
+    justify-content: left;
+  }
 </style>
