@@ -1,1 +1,9 @@
-@import "chart.js/chart";
+// Normalize
+@import "~normalize-scss/sass/normalize/import-now";
+
+// Import fonts and icons
+@import "~roboto-fontface/css/roboto/sass/roboto-fontface";
+@import "~material-design-icons-iconfont/dist/material-design-icons";
+
+// Local chart.js styles
+// @import "chart.js/chart";

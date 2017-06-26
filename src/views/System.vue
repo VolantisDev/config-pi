@@ -3,10 +3,8 @@
     <v-flex xs12>
       <v-card>
         <v-card-text>
-          <p><strong>Welcome to Pi Config!</strong></p>
-
-          <p>Take a look at the basics below, and check the sidebar for all of the
-            configuration options you can use to configure your Pi.</p>
+          <p>Use this screen to configure your pi. You can switch
+            between the various sections easily in the footer.</p>
         </v-card-text>
       </v-card>
     </v-flex>
@@ -17,6 +15,6 @@
 
 <script>
 export default {
-  name: 'dashboard'
+  name: 'system'
 }
 </script>

@@ -1,41 +1,65 @@
 <template>
-  <div class="app">
-    <AppHeader/>
-    <div class="app-body">
-      <Sidebar/>
-      <main class="main">
-        <breadcrumb :list="list"/>
-        <div class="container-fluid">
-          <router-view></router-view>
-        </div>
-      </main>
-    </div>
-    <AppFooter/>
-  </div>
+  <v-app>
+    <v-navigation-drawer persistent v-model="drawer" enable-resize-watcher light>
+      <MainMenu></MainMenu>
+    </v-navigation-drawer>
+    <v-toolbar light>
+      <v-toolbar-side-icon light @click.native.stop="drawer = !drawer"></v-toolbar-side-icon>
+      <v-toolbar-title>Pi Config</v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-toolbar-side-icon light @click.native.stop="drawerRight = !drawerRight"></v-toolbar-side-icon>
+    </v-toolbar>
+    <main>
+      <v-container fluid>
+        <breadcrumb :list="list"></breadcrumb>
+        <router-view></router-view>
+      </v-container>
+    </main>
+  </v-app>
 </template>
 
 <script>
-import AppHeader from '../components/Header'
-import Sidebar from '../components/Sidebar'
-import AppFooter from '../components/Footer'
-import Breadcrumb from '../components/Breadcrumb'
+import EventBus from '@/event-bus'
+import Breadcrumb from '@/components/layout/Breadcrumb'
+import MainMenu from '@/components/layout/MainMenu'
+import AppFooter from '@/components/layout/AppFooter'
 
 export default {
   name: 'full',
   components: {
-    AppHeader,
-    Sidebar,
-    AppFooter,
-    Breadcrumb
+    Breadcrumb,
+    MainMenu,
+    AppFooter
+  },
+  data () {
+    return {
+      drawer: true,
+      drawerRight: true,
+      right: null,
+      left: null
+    }
   },
   computed: {
     name () {
       return this.$route.name
     },
-
     list () {
       return this.$route.matched
+    }
+  },
+  methods: {
+    toggleLeftSidenav () {
+      EventBus.$emit('toggle-left-sidenav')
+    },
+    toggleRightSidenav () {
+      EventBus.$emit('toggle-right-sidenav')
     }
   }
 }
 </script>
+
+<style lang="scss">
+  .app-body {
+    padding: 0 1rem;
+  }
+</style>

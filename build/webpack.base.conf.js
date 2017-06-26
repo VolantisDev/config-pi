@@ -1,6 +1,6 @@
 var path = require('path')
 var utils = require('./utils')
-var config = require('../config')
+var config = require('../src/config')
 var vueLoaderConfig = require('./vue-loader.conf')
 var ExtractTextPlugin = require("extract-text-webpack-plugin")
 
@@ -23,7 +23,7 @@ module.exports = {
         extensions: ['.js', '.vue', '.json'],
         alias: {
             'vue$': 'vue/dist/vue.esm.js',
-            '@': resolve('src')
+            '@': resolve('src'),
         }
     },
     module: {
@@ -55,16 +55,24 @@ module.exports = {
                 }
             },
             {
-                test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
+                test: /\.(woff2?)(\?.*)?$/,
                 loader: 'url-loader',
                 options: {
-                    limit: 10000,
+                    // limit: 10000,
+                    name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
+                }
+            },
+            {
+                test: /\.(ttf|eot|otf)(\?.*)?$/,
+                loader: 'file-loader',
+                options: {
+                    // limit: 10000,
                     name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
                 }
             }
         ]
     },
     plugins: [
-        new ExtractTextPlugin("static/css/style.css")
+        new ExtractTextPlugin(utils.assetsPath('css/style.css'))
     ]
 }

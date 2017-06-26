@@ -1,5 +1,5 @@
 var path = require('path')
-var config = require('../config')
+var config = require('../src/config')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 exports.assetsPath = function (_path) {
@@ -29,6 +29,17 @@ exports.cssLoaders = function (options) {
         options: Object.assign({}, loaderOptions, {
           sourceMap: options.sourceMap
         })
+      })
+    }
+
+    if (loader === 'sass') {
+      loaders.push({
+        loader: 'sass-resources-loader',
+        options: {
+          resources: [
+            path.resolve(__dirname, '../src/scss/_variables.scss'),
+          ]
+        },
       })
     }
 

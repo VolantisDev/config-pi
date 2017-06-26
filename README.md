@@ -12,10 +12,6 @@ Pi Config is an alternative to the existing norm. It allows things such as:
 - Custom UPnP port assignments
 - Much more!
 
-## Thanks
-
-Thanks to CoreUI, the wonderful and open source admin theme that help launch this project.
-
 ## Development
 
 If you wish to contribute to Pi Config's development, here are some helpful commands:
