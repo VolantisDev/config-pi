@@ -8,10 +8,20 @@ import store from '@/store'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import Vuetify from 'vuetify'
-import 'font-awesome/scss/font-awesome.scss'
 import '@/scss/style.scss'
 
-export default (app) => {
+const UiPlugin = {}
+
+export default UiPlugin
+
+UiPlugin.name = 'ui'
+
+UiPlugin.attach = options => {
+  var app = this
+
+  // Save the app for other components to access
+  store.commit('setApp', app)
+
   Vue.use(VueAxios, axios)
   Vue.use(Vuetify)
   Vue.use(VueProgressBar, {
@@ -36,4 +46,8 @@ export default (app) => {
     template: '<App/>',
     components: { App }
   })
+}
+
+UiPlugin.init = done => {
+  done()
 }

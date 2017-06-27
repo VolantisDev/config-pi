@@ -2,6 +2,6 @@ config
 asset-manager
 webpack
 server
-api
+ui
 service-manager
 systemd
