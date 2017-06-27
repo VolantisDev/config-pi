@@ -5,10 +5,8 @@
   "author": "Ben McClure <ben.mcclure@gmail.com>",
   "license": "Unlicense",
   "scripts": {
-    "dev": "node build/server.dev.js",
-    "prod": "node server.js",
-    "start": "node server.js",
-    "build": "node build/build.js",
+    "start": "node index.js",
+    "build": "node build.js",
     "unit": "cross-env BABEL_ENV=test karma start test/unit/karma.conf.js --single-run",
     "e2e": "node test/e2e/runner.js",
     "test": "npm run unit && npm run e2e",
