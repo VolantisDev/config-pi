@@ -1,6 +1,6 @@
 var path = require('path')
 var utils = require('./utils')
-var config = require('../src/config')
+var config = require('../config')
 var vueLoaderConfig = require('./vue-loader.conf')
 var ExtractTextPlugin = require("extract-text-webpack-plugin")
 
@@ -10,7 +10,7 @@ function resolve(dir) {
 
 module.exports = {
     entry: {
-        app: './src/bootstrap.js'
+        app: './core/bootstrap.js'
     },
     output: {
         path: config.build.assetsRoot,

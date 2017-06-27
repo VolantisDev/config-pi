@@ -1,11 +1,15 @@
 var Promise = require('bluebird')
 var npm = require('npm-programmatic')
 var architect = Promise.promisifyAll(require('architect'))
+var userPlugins = require('./user-plugins')
 var plugins = require('./plugins')
 var shell = Promise.promisifyAll(require('shelljs'))
+var path = require('path')
+
+var pluginsDir = '/usr/lib/pi-config/plugins'
 
 var npmOptions = {
-  cwd: plugins.pluginsDir,
+  cwd: pluginsDir,
   save: true
 }
 
@@ -18,7 +22,7 @@ module.exports = {
 
 function bootstrap () {
   return new Promise((resolve, reject) => {
-    architect.resolveConfigAsync(plugins.architectPlugins, plugins.pluginsDir)
+    architect.loadConfig(path.resolve(__dirname, 'architect-plugins.js'))
       .then(architect.createAppAsync)
       .then(resolve) // Return app object
       .catch(reject) // Reject with error object
@@ -27,9 +31,9 @@ function bootstrap () {
 
 function install (plugin) {
   return new Promise((resolve, reject) => {
-    var installPlugins = plugin ? [plugin] : plugins
+    var installPlugins = plugin ? [plugin] : userPlugins
 
-    shell.mkdirAsync('-p', plugins.pluginsDir)
+    shell.mkdirAsync('-p', pluginsDir)
       .then(() => {
         return npm.install(installPlugins, npmOptions)
       })
