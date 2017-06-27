@@ -1,0 +1,11 @@
+{
+  "name": "pi-config-plugin-systemd",
+  "version": "0.1.0",
+  "main": "systemd.js",
+  "plugin": {
+    "consumes": [],
+    "provides": [
+      "serviceManager"
+    ]
+  }
+}
