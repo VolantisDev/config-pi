@@ -2,19 +2,31 @@ var path = require('path')
 
 var AssetManagerPlugin = exports
 
-AssetManagerPlugin.name = 'assetManager'
+AssetManagerPlugin.name = 'AssetManager'
 
-AssetManagerPlugin.attach = options => {
-  var app = this
-  var config = app.config[app.config.environment]
-  var staticPath = path.posix.join(config.assetsPublicPath, config.assetsSubDirectory)
+AssetManagerPlugin.requires = ['Config']
 
-  var assets = {}
-  assets[staticPath] = path.resolve(__dirname, '../../static')
+AssetManagerPlugin.init = (app, { Config }) => {
+  app.bootstrap.pluginSpinner.text = 'Attaching AssetManager plugin'
 
-  app.assets = assets
-}
+  var envConfig = Config.config[Config.config.environment]
+  var staticPath = path.posix.join(envConfig.assetsPublicPath, envConfig.assetsSubDirectory)
 
-AssetManagerPlugin.init = done => {
-  done()
+  var staticAssets = {}
+  staticAssets[staticPath] = path.resolve(__dirname, '../../static')
+
+  var plugin = {
+    exports: {
+      staticAssets: staticAssets
+    },
+    hooks: {
+      staticAssets (pluginName, pluginAssets) {
+        pluginAssets.forEach((assetPath, staticPath) => {
+          staticAssets[staticPath] = assetPath
+        })
+      }
+    }
+  }
+
+  return plugin
 }

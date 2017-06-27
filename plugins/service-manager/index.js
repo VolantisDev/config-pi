@@ -1,66 +1,71 @@
 var Promise = require('bluebird')
-var fs = Promise.promisifyAll(require('fs'))
 var path = require('path')
-var systemd = Promise.promisify(require('strong-service-systemd'))
-var pluginManager = require('./plugin-manager')
+var ora = require('ora')
 
-var defaults = {
-  user: 'root',
-  group: 'root',
-  execpath: '/usr/bin/node',
-  template: path.resolve(__dirname, '../templates/systemd.service.jst')
-}
+var ServiceManagerPlugin = module.exports
 
-var installDir = path.resolve(__dirname, '../')
+ServiceManagerPlugin.name = 'ServiceManager'
 
-var services = {
-  'pi-config': Object.assign(defaults, {
-    description: 'Pi Config API',
-    author: 'Ben McClure <ben.mcclure@gmail.com>',
-    cwd: installDir,
-    script: installDir + '/server.js'
-  })
-}
+ServiceManagerPlugin.requires = ['Systemd']
 
-module.exports = {
-  getServices: getServices,
-  install: install,
-  installAll: installAll
-}
+ServiceManagerPlugin.init = (app, { Systemd }) => {
+  app.bootstrap.pluginSpinner.text = 'Attaching ServiceManager plugin'
 
-function getServices () {
-  return new Promise((resolve, reject) => {
-    pluginManager.bootstrap()
-      .then((app) => {
-        // @todo merge services from plugins
-        resolve(services)
+  var installDir = path.resolve(__dirname, '../')
+
+  var services = {
+    'pi-config': {
+      description: 'Pi Config API',
+      author: 'Ben McClure <ben.mcclure@gmail.com>',
+      cwd: installDir,
+      script: installDir + '/server.js'
+    }
+  }
+
+  var plugin = {
+    exports: {
+      install: install,
+      installAll: () => {
+        return installAll(app)
+      },
+      services: services
+    },
+    hooks: {
+      services (pluginName, pluginServices) {
+        pluginServices.forEach((service, serviceName) => {
+          services[serviceName] = service
+        })
+      }
+    }
+  }
+
+  function install (name, config) {
+    return new Promise((resolve, reject) => {
+      var spinner = ora('Installing ' + name + ' service').start()
+
+      Systemd.add(name, config)
+        .then(() => {
+          spinner.succeed('Installed ' + name + ' service')
+          resolve()
+        })
+        .catch((error) => {
+          spinner.fail('Failed to install ' + name + ' service')
+          reject(error)
+        })
+    })
+  }
+
+  function installAll (app) {
+    return new Promise((resolve, reject) => {
+      var spinner = ora('Installing all services').start()
+
+      services.forEach((service, serviceName) => {
+        install(serviceName, service)
       })
-      .catch(reject)
-  })
-}
 
-function install (name, config) {
-  return new Promise((resolve, reject) => {
-    systemd(Object.assign({name: name}, defaults, config))
-      .then((service) => {
-        return fs.writeFileAsync('/etc/systemd/system/' + name + '.service', service)
-      })
-      .then(() => {
-        resolve()
-      })
-      .catch((error) => {
-        console.error(error)
-        reject(error)
-      })
-  })
-}
+      spinner.succeed('Finished installing services')
+    })
+  }
 
-function installAll () {
-  return new Promise((resolve, reject) => {
-    getServices()
-      .then((services) => {
-        // @todo Loop through services and ensure each one is installed
-      })
-      .catch(reject)
-  })
+  return plugin
 }

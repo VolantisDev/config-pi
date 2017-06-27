@@ -5,8 +5,8 @@ var rmfr = require('rmfr')
 var path = require('path')
 var chalk = require('chalk')
 var webpack = require('webpack')
-var config = require('../core/config')
-var webpackConfig = require('./webpack.prod.conf')
+var config = require('../../config')
+var webpackConfig = require('../../plugins/webpack/webpack.prod.conf')
 
 module.exports = {
   build: build

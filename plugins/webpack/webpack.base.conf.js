@@ -10,7 +10,7 @@ function resolve (dir) {
 
 module.exports = {
   entry: {
-    app: './core/bootstrap.js'
+    app: './plugins/ui/src/main.js'
   },
   output: {
     path: config.build.assetsRoot,

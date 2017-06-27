@@ -1,11 +1,8 @@
-import Promise from 'bluebird'
-import fs from 'fs-extra'
-import path from 'path'
-import systemd from 'strong-service-systemd'
-import systemctl from 'systemctl'
-
-// Convert to promises
-systemd = Promise.promisify(systemd)
+const Promise = require('bluebird')
+const fs = require('fs-extra')
+const path = require('path')
+const systemd = Promise.promisify(require('strong-service-systemd'))
+const systemctl = require('systemctl')
 
 var serviceDefaults = {
   user: 'root',
@@ -14,9 +11,15 @@ var serviceDefaults = {
   template: path.resolve(__dirname, '../templates/systemd.service.jst')
 }
 
-export default function (options, imports, register) {
-  register(null, {
-    serviceManager: {
+var SystemdPlugin = module.exports
+
+SystemdPlugin.name = 'Systemd'
+
+SystemdPlugin.init = (app) => {
+  app.bootstrap.pluginSpinner.text = 'Attaching Systemd plugin'
+
+  return {
+    exports: {
       add: add,
       remove: remove,
       enable: enable,
@@ -27,7 +30,7 @@ export default function (options, imports, register) {
       isEnabled: isEnabled,
       daemonReload: daemonReload
     }
-  })
+  }
 }
 
 function servicePath (name) {

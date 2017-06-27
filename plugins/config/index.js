@@ -1,15 +1,13 @@
-const config = require('../../config')
-
 const ConfigPlugin = exports
 
-ConfigPlugin.name = 'config'
+ConfigPlugin.name = 'Config'
 
-ConfigPlugin.attach = options => {
-  const app = this
+ConfigPlugin.init = (app) => {
+  app.bootstrap.pluginSpinner.text = 'Attaching config plugin'
 
-  app.config = config
-}
-
-ConfigPlugin.init = done => {
-  done()
+  return {
+    exports: {
+      config: require('../../config')
+    }
+  }
 }

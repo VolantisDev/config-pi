@@ -19,12 +19,19 @@ module.exports = {
 }
 
 function bootstrap (app) {
+  var pluginManager = require('tennu-plugins')('tennu', app)
+
+  app.pluginManager = pluginManager
+
   return new Promise((resolve, reject) => {
+    app.bootstrap.pluginSpinner.start()
+
     for (var i in plugins) {
       var plugin = plugins[i]
-
-      app.mixin(require(plugin.path))
+      pluginManager.use([plugin.name], plugin.path)
     }
+
+    resolve()
   })
 }
 

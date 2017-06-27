@@ -9,6 +9,7 @@ var index
 var plugin
 
 var pluginsArray = fs.readFileSync(defaultPluginsFile).toString().split('\n')
+pluginsArray = pluginsArray.filter(n => { return n })
 for (index in pluginsArray) {
   plugin = pluginsArray[index]
 
@@ -22,11 +23,13 @@ for (index in pluginsArray) {
 for (index in userPlugins) {
   plugin = userPlugins[index]
 
-  plugins.push({
-    name: plugin,
-    type: 'user',
-    path: path.resolve(pluginsDir, plugin)
-  })
+  if (plugin) {
+    plugins.push({
+      name: plugin,
+      type: 'user',
+      path: path.resolve(pluginsDir, plugin)
+    })
+  }
 }
 
 module.exports = plugins

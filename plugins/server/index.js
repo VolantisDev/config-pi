@@ -5,12 +5,15 @@ var opn = require('opn')
 
 var ServerPlugin = exports
 
-ServerPlugin.name = 'server'
+ServerPlugin.name = 'Server'
 
-ServerPlugin.attach = options => {
-  var app = this
-  var env = (app.config.environment === 'production') ? 'server' : 'dev'
-  var config = app.config[env]
+ServerPlugin.requires = ['Config', 'Webpack', 'AssetManager']
+
+ServerPlugin.init = (app, { Config, Webpack, AssetManager }) => {
+  app.bootstrap.pluginSpinner.text = 'Attaching Server plugin'
+
+  var env = (Config.config.environment === 'production') ? 'server' : 'dev'
+  var config = Config.config[env]
   var proxyTable = config.proxyTable || {}
 
   var server = express()
@@ -27,22 +30,20 @@ ServerPlugin.attach = options => {
 
   server.use(connectHistoryApiFallback())
 
-  if (app.config.environment !== 'production') {
-    if (app.devMiddleware) {
-      server.use(app.devMiddleware)
+  if (Config.config.environment !== 'production') {
+    if (Webpack.devMiddleware) {
+      server.use(Webpack.devMiddleware)
     }
 
-    if (app.hotMiddleware) {
-      server.use(app.hotMiddleware)
+    if (Webpack.hotMiddleware) {
+      server.use(Webpack.hotMiddleware)
     }
   }
 
-  Object.keys(app.assets).forEach(staticPath => {
-    var serverPath = app.assets[staticPath]
+  Object.keys(AssetManager.staticAssets).forEach(staticPath => {
+    var serverPath = AssetManager.staticAssets[staticPath]
     server.use(staticPath, express.static(serverPath))
   })
-
-  app.server = server
 
   var listenServer
 
@@ -51,9 +52,9 @@ ServerPlugin.attach = options => {
     _resolve = resolve
   })
 
-  app.listen = () => {
+  var listen = () => {
     var listenStart = () => {
-      if (config.autoOpenBrowser && app.config.environment !== 'testing') {
+      if (config.autoOpenBrowser && Config.config.environment !== 'testing') {
         var uri = 'http://' + config.host + ':' + config.port
         opn(uri)
       }
@@ -61,24 +62,27 @@ ServerPlugin.attach = options => {
       _resolve()
     }
 
-    if (app.config.environment !== 'production' && app.devMiddleware) {
-      app.devMiddleware.waitUntilValid(listenStart)
+    if (Config.config.environment !== 'production' && Webpack.devMiddleware) {
+      Webpack.devMiddleware.waitUntilValid(listenStart)
     }
 
     listenServer = server.listen(config.port || 88, config.address || '0.0.0.0')
 
-    if (app.config.environment === 'production' || !app.devMiddleware) {
+    if (Config.config.environment === 'production' || !Webpack.devMiddleware) {
       listenStart()
     }
   }
 
-  app.serverReady = readyPromise
-
-  app.closeServer = () => {
+  var close = () => {
     listenServer.close()
   }
-}
 
-ServerPlugin.init = done => {
-  done()
+  return {
+    exports: {
+      server: server,
+      listen: listen,
+      serverReady: readyPromise,
+      close: close
+    }
+  }
 }

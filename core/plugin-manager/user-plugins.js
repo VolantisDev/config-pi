@@ -7,4 +7,6 @@ if (fs.existsSync(pluginsFile)) {
   plugins = fs.readFileSync(pluginsFile).toString().split('\n')
 }
 
+plugins = plugins.filter(n => { return n })
+
 module.exports = plugins
