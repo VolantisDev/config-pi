@@ -1,6 +1,6 @@
 var utils = require('./utils')
-var config = require('../config')
-var isProduction = process.env.NODE_ENV === 'production'
+var config = require('../../config')
+var isProduction = config.environment === 'production'
 
 module.exports = {
   extractCSS: isProduction,

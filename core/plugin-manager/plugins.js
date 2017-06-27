@@ -2,22 +2,30 @@ var path = require('path')
 var fs = require('fs')
 var userPlugins = require('./user-plugins')
 
+var pluginsDir = '/usr/lib/pi-config/plugins'
 var defaultPluginsFile = path.resolve(__dirname, '../../config/plugins')
 var plugins = []
 var index
+var plugin
 
 var pluginsArray = fs.readFileSync(defaultPluginsFile).toString().split('\n')
 for (index in pluginsArray) {
+  plugin = pluginsArray[index]
+
   plugins.push({
-    name: pluginsArray[index],
-    type: 'core'
+    name: plugin,
+    type: 'core',
+    path: path.resolve(__dirname, '../../plugins', plugin)
   })
 }
 
 for (index in userPlugins) {
+  plugin = userPlugins[index]
+
   plugins.push({
-    name: userPlugins[index],
-    type: 'user'
+    name: plugin,
+    type: 'user',
+    path: path.resolve(pluginsDir, plugin)
   })
 }
 

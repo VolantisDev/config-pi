@@ -1,2 +1,7 @@
-pi-config-plugin-systemd
-pi-config-plugin-api
+config
+asset-manager
+webpack
+server
+api
+service-manager
+systemd

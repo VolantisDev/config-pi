@@ -1,10 +1,8 @@
 var Promise = require('bluebird')
 var npm = require('npm-programmatic')
-var architect = Promise.promisifyAll(require('architect'))
 var userPlugins = require('./user-plugins')
 var plugins = require('./plugins')
 var shell = Promise.promisifyAll(require('shelljs'))
-var path = require('path')
 
 var pluginsDir = '/usr/lib/pi-config/plugins'
 
@@ -20,12 +18,12 @@ module.exports = {
   uninstall: uninstall
 }
 
-function bootstrap () {
+function bootstrap (app) {
   return new Promise((resolve, reject) => {
-    architect.loadConfig(path.resolve(__dirname, 'architect-plugins.js'))
-      .then(architect.createAppAsync)
-      .then(resolve) // Return app object
-      .catch(reject) // Reject with error object
+    for (var i in plugins) {
+      var plugin = plugins[i]
+      app.use(require(plugin.path))
+    }
   })
 }
 
