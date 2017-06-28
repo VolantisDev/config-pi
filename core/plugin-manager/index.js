@@ -13,8 +13,6 @@ var npmOptions = {
   save: true
 }
 
-
-
 module.exports = {
   plugins: plugins,
   bootstrap: bootstrap,
