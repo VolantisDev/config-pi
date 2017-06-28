@@ -6,7 +6,7 @@ var path = require('path')
 var chalk = require('chalk')
 var webpack = require('webpack')
 var config = require('../../config')
-var webpackConfig = require('../../plugins/webpack/webpack.prod.conf')
+var webpackConfig = require('../../piconfig_plugins/webpack/webpack.prod.conf')
 
 module.exports = {
   build: build

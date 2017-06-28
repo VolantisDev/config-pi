@@ -1,7 +1,8 @@
 config
-asset-manager
+asset_manager
 webpack
+stupidthing
 server
 ui
-service-manager
+service_manager
 systemd

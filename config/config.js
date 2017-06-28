@@ -3,9 +3,11 @@ var path = require('path')
 
 module.exports = {
   environment: process.env.NODE_ENV || 'production',
+  configEnv: process.env.NODE_ENV === 'production' ? 'server' : 'dev',
   server: {
     env: require('./prod.env'),
     listenAddress: '0.0.0.0',
+    host: 'localhost',
     port: 88,
     autoOpenBrowser: false,
     assetsSubDirectory: 'static',
@@ -37,6 +39,7 @@ module.exports = {
     env: require('./dev.env'),
     listenAddress: '0.0.0.0',
     port: 88,
+    host: 'localhost',
     autoOpenBrowser: true,
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',

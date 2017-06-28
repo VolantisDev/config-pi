@@ -7,36 +7,58 @@ module.exports = bootstrap
 
 function bootstrap () {
   return new Promise((resolve, reject) => {
-    const app = {}
-    app.bootstrap = {}
-    app.bootstrap.spinner = ora('Bootstrapping application (' + config.environment + ')').start()
+    const app = require('../app')
+    var spinner = ora('Bootstrapping application (' + config.environment + ')').start()
+    var pluginSpinner
 
     pluginManager
       .install()
       .then(() => {
-        app.bootstrap.pluginSpinner = ora('Bootstrapping plugins')
+        pluginSpinner = ora('Bootstrapping plugins').start()
 
         return pluginManager.bootstrap(app)
       })
       .then(() => {
-        var ServerPlugin = app.pluginManager.getPlugin('Server')
+        pluginSpinner.succeed('Plugins bootstrapped successfully')
 
-        app.bootstrap.pluginSpinner.succeed('Plugins bootstrapped successfully')
+        var servers = app.servers
+        var started = 0
 
-        var listenSpinner = ora('Starting listen server')
-        if (ServerPlugin.listen) {
-          ServerPlugin.listen()
-          listenSpinner.succeed('Started listen server')
-          app.bootstrap.spinner.succeed('Application bootstrapped successfully')
+        var serverSpinner = ora('Starting servers')
+
+        Object.keys(servers).forEach((plugin) => {
+          var pluginServers = servers[plugin]
+
+          Object.keys(pluginServers).forEach((server) => {
+            var pluginCallback = pluginServers[server]
+            var listenSpinner = ora('Starting ' + server + ' (Plugin: ' + plugin + ')')
+
+            pluginCallback()
+              .then(() => {
+                listenSpinner.succeed('Started ' + server + ' (Plugin: ' + plugin + ')')
+              })
+              .catch(error => {
+                listenSpinner.fail('Failed to start ' + server + ' (Plugin: ' + plugin + ')')
+                console.log(error)
+              })
+
+            started++
+          })
+        })
+
+
+        if (started) {
+          serverSpinner.succeed('Started ' + started + ' servers')
+          spinner.succeed('Application bootstrapped successfully')
+          resolve(app)
         } else {
-          listenSpinner.warn('No listen server found')
-          app.bootstrap.spinner.warn('Application bootstrapped but did not start a server')
+          serverSpinner.fail('Did not initialize any servers')
+          spinner.warn('Application bootstrapped but has nothing to serve')
+          reject(new Error('Bootstrap process did not initialize a server'))
         }
-
-        resolve(app)
       })
       .catch((error) => {
-        app.bootstrap.spinner.fail('Application bootstrapping failed')
+        spinner.fail('Application bootstrapping failed')
         reject(error)
       })
   })

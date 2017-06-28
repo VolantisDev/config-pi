@@ -2,7 +2,7 @@ var path = require('path')
 var fs = require('fs')
 var userPlugins = require('./user-plugins')
 
-var pluginsDir = '/usr/lib/pi-config/plugins'
+var pluginsDir = '/usr/lib/pi-config/piconfig_plugins'
 var defaultPluginsFile = path.resolve(__dirname, '../../config/plugins')
 var plugins = []
 var index
@@ -16,7 +16,7 @@ for (index in pluginsArray) {
   plugins.push({
     name: plugin,
     type: 'core',
-    path: path.resolve(__dirname, '../../plugins', plugin)
+    path: path.resolve(__dirname, '../../piconfig_plugins', plugin)
   })
 }
 
